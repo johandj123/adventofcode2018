@@ -3,8 +3,11 @@ package lib;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class InputUtil {
@@ -45,5 +48,15 @@ public class InputUtil {
                 .filter(s -> !s.isBlank())
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
+    }
+
+    public static List<String> extract(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        List<String> result = new ArrayList<>();
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            result.add(matcher.group());
+        }
+        return result;
     }
 }
