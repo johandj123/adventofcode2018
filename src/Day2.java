@@ -1,9 +1,9 @@
 import lib.CollectionUtil;
+import lib.Counter;
 import lib.InputUtil;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Day2 {
@@ -17,11 +17,11 @@ public class Day2 {
         int two = 0;
         int three = 0;
         for (String s : input) {
-            Map<Integer, Integer> h = CollectionUtil.calculateHistogram(s.codePoints().boxed().collect(Collectors.toList()));
-            if (h.containsValue(2)) {
+            Counter<Integer> h = CollectionUtil.calculateHistogram(s.codePoints().boxed().collect(Collectors.toList()));
+            if (h.values().contains(2)) {
                 two++;
             }
-            if (h.containsValue(3)) {
+            if (h.values().contains(3)) {
                 three++;
             }
         }
