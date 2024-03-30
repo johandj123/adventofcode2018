@@ -19,11 +19,20 @@ public class Day19 {
     }
 
     private static void second(int ipRegister, List<String> instructions) {
-        // TODO This seems to slow
-        Computer computer = new Computer(ipRegister, instructions);
-        computer.registers[0] = 1;
-        computer.run();
-        System.out.println(computer.registers[0]);
+        // Running the program is too slow
+//        Computer computer = new Computer(ipRegister, instructions);
+//        computer.registers[0] = 1;
+//        computer.run();
+//        System.out.println(computer.registers[0]);
+        // Reverse engineering the program show that it sums all dividers of 10551354 (or 954 for part 1)
+        int result = 0;
+        int number = 10551354;
+        for (int i = 1; i <= number; i++) {
+            if ((number % i) == 0) {
+                result += i;
+            }
+        }
+        System.out.println(result);
     }
 
     static class Computer {
