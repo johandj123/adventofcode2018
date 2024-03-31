@@ -325,6 +325,27 @@ public class CharMatrix {
             return result;
         }
 
+        public List<Position> getNeighboursIncludingDiagonal()
+        {
+            List<Position> result = new ArrayList<>();
+            for (Position delta : new Position[] {
+                    new Position(-1, 0),
+                    new Position(1, 0),
+                    new Position(0, -1),
+                    new Position(0, 1),
+                    new Position(-1, -1),
+                    new Position(1, -1),
+                    new Position(-1, 1),
+                    new Position(1, 1)
+            }) {
+                Position next = this.add(delta);
+                if (next.isValid()) {
+                    result.add(next);
+                }
+            }
+            return result;
+        }
+
         @Override
         public String toString() {
             return String.format("(%d,%d)", x, y);
