@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CharMatrix {
+    private static final Comparator<Position> POSITION_COMPARATOR = Comparator.comparing(Position::getY).thenComparing(Position::getX);
+
     private char[][] content;
     private char fill;
 
@@ -208,7 +210,7 @@ public class CharMatrix {
                 .collect(Collectors.joining("\n"));
     }
 
-    public class Position
+    public class Position implements Comparable<Position>
     {
         final int x;
         final int y;
@@ -326,6 +328,11 @@ public class CharMatrix {
         @Override
         public String toString() {
             return String.format("(%d,%d)", x, y);
+        }
+
+        @Override
+        public int compareTo(Position o) {
+            return POSITION_COMPARATOR.compare(this, o);
         }
     }
 }
