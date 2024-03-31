@@ -12,7 +12,8 @@ public class Day17 {
         Simulator simulator = new Simulator(clay);
         simulator.simulate();
         simulator.print();
-        System.out.println(simulator.count());
+        System.out.println(simulator.countReach());
+        System.out.println(simulator.countRest());
     }
 
     private static Set<Position> readInput() throws IOException {
@@ -140,8 +141,12 @@ public class Day17 {
             System.out.println();
         }
 
-        public int count() {
+        public int countReach() {
             return reach.size();
+        }
+
+        public int countRest() {
+            return rest.size();
         }
     }
 
