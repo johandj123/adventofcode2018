@@ -6,6 +6,26 @@ import java.util.stream.Collectors;
 
 public class Day24 {
     public static void main(String[] args) throws IOException {
+        first();
+        second();
+    }
+
+    private static void first() throws IOException {
+        Result result = battle(0);
+        System.out.println(result.count);
+    }
+
+    private static void second() throws IOException {
+        for (int i = 20; i <= 50; i++) {
+            Result result = battle(i);
+            if (result.winningArmy == 0) {
+                System.out.println(result.count);
+                break;
+            }
+        }
+    }
+
+    private static Result battle(int boost) throws IOException {
         List<String> input = InputUtil.readAsStringGroups("input24.txt");
         List<Group> groups = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
@@ -14,13 +34,19 @@ public class Day24 {
                 groups.add(new Group(i, sp[j]));
             }
         }
+        groups.stream().filter(g -> g.army == 0).forEach(g -> g.attackDamage += boost);
         while (groups.stream().map(g -> g.army).collect(Collectors.toSet()).size() > 1) {
             Map<Group, Group> targetMap = selectTargets(groups);
+            if (targetMap.isEmpty()) {
+                break;
+            }
             attack(targetMap);
             groups.removeIf(Group::isDead);
         }
+        Set<Integer> remainingArmies = groups.stream().map(g -> g.army).collect(Collectors.toSet());
+        int winningArmy = remainingArmies.size() == 1 ? remainingArmies.iterator().next() : -1;
         int count = groups.stream().mapToInt(g -> g.count).sum();
-        System.out.println(count);
+        return new Result(winningArmy, count);
     }
 
     private static Map<Group, Group> selectTargets(List<Group> groups) {
@@ -59,13 +85,23 @@ public class Day24 {
         }
     }
 
+    static class Result {
+        final int winningArmy;
+        final int count;
+
+        public Result(int winningArmy, int count) {
+            this.winningArmy = winningArmy;
+            this.count = count;
+        }
+    }
+
     static class Group {
         final int army;
         int count;
         final int hitPoints;
         final Set<String> immune = new HashSet<>();
         final Set<String> weak = new HashSet<>();
-        final int attackDamage;
+        int attackDamage;
         String attackType;
         final int initiative;
         boolean underAttack;
