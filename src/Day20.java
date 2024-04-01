@@ -19,8 +19,20 @@ public class Day20 {
         field.put(start, '.');
         processSerial(input, Set.of(start));
         print();
+        first(start);
+        second(start);
+    }
+
+    private void first(Position start) {
         int distance = GraphUtil.breadthFirstSearch(start, this::getNeighbours);
         System.out.println(distance / 2);
+    }
+
+    private void second(Position start) {
+        Set<Position> set = GraphUtil.reachable(start, this::getNeighbours);
+        set.removeAll(GraphUtil.breadthFirstSearch(start, this::getNeighbours, 999 * 2));
+        long count = set.stream().filter(position -> field.get(position) == '.').count();
+        System.out.println(count);
     }
 
     private List<Position> getNeighbours(Position position) {
