@@ -46,6 +46,26 @@ public class GraphUtil {
         throw new IllegalStateException("End not found");
     }
 
+    public static <T> int breadthFirstSearch(T start, Function<T, Iterable<T>> neighbours) {
+        Set<T> explored = new HashSet<>();
+        Set<T> current = new HashSet<>(List.of(start));
+        int counter = 0;
+        while (!current.isEmpty()) {
+            explored.addAll(current);
+            Set<T> next = new HashSet<>();
+            for (T node : current) {
+                for (T nextNode : neighbours.apply(node)) {
+                    if (!explored.contains(nextNode)) {
+                        next.add(nextNode);
+                    }
+                }
+            }
+            counter++;
+            current = next;
+        }
+        return counter - 1;
+    }
+
     public static <T> Set<T> breadthFirstSearch(T start, Function<T, Iterable<T>> neighbours, int steps) {
         Set<T> explored = new HashSet<>();
         Set<T> current = new HashSet<>(List.of(start));
